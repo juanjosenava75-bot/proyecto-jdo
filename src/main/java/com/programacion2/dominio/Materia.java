@@ -40,9 +40,18 @@ public class Materia {
         this.profesor = profesor;
     }
 
+    
     @Override
     public String toString() {
         return "Materia [id=" + id + ", nombre=" + nombre + ", profesor=" + profesor + "]";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 }

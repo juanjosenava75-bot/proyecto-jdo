@@ -31,7 +31,10 @@
                 name="javax.jdo.option.ConnectionUserName"
                 value="programacion2"/>
 
-            
+              <property
+                name="javax.jdo.option.ConnectionPassword"
+                value="Programacion2"/>
+
 
             <property
                 name="datanucleus.schema.autoCreateAll"
