@@ -13,6 +13,8 @@ public class Profesor {
     private int id;
     private String nombre;
     private String apellido;
+    @Persistent(mappedBy = "profesor")
+    private Materia materia;
 
     public Profesor() {
     }
@@ -40,6 +42,31 @@ public class Profesor {
 
     public void setApellido(String apellido) {
         this.apellido = apellido;
+    }
+
+    
+
+        public void setId(int id) {
+        this.id = id;
+    }
+
+    public Materia getMateria() {
+        return materia;
+    }
+
+    public void setMateria(Materia materia) {
+        this.materia = materia;
+    }
+
+        @Override
+    public String toString() {
+        return "Profesor{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", materia=" +
+                (materia != null ? materia.getNombre() : "sin materia") +
+                '}';
     }
 
 }
