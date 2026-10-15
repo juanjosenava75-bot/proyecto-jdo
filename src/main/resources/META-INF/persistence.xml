@@ -13,6 +13,7 @@
         <class>com.programacion2.dominio.Persona</class>
         <class>com.programacion2.dominio.Materia</class>
         <class>com.programacion2.dominio.Profesor</class>
+         <class>com.programacion2.dominio.Alumno</class>
 
 
         <exclude-unlisted-classes/>
