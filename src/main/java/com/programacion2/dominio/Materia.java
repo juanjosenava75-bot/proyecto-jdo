@@ -19,7 +19,7 @@ public class Materia {
     @Column(name = "PROFESOR_ID")
     private Profesor profesor;
 
-    @Element(column = "MATERIA_ID")
+    @Persistent(mappedBy = "materia")
     private ArrayList<Alumno> alumnos;
 
     public Materia() {
@@ -67,7 +67,10 @@ public class Materia {
 
     public void agregarAlumno(Alumno alumno) {
         alumnos.add(alumno);
+        alumno.setMateria(this);
     }
+
+    
 
     @Override
     public String toString() {

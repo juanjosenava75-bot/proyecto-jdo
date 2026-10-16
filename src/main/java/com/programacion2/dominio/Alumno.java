@@ -1,5 +1,6 @@
 package com.programacion2.dominio;
 
+import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -15,6 +16,9 @@ public class Alumno {
     private String nombre;
 
     private String apellido;
+
+    @Column(name = "MATERIA_ID")
+    private Materia materia;
 
     public Alumno() {
     }
@@ -43,6 +47,16 @@ public class Alumno {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+    
+    public Materia getMateria() {
+        return materia;
+    }
+
+    public void setMateria(Materia materia) {
+        this.materia = materia;
+    }
+
+    
 
     @Override
     public String toString() {
@@ -50,6 +64,11 @@ public class Alumno {
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
+                ", materia=" +
+                (materia != null
+                        ? materia.getNombre()
+                        : "sin materia") +
                 '}';
     }
+
 }
