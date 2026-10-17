@@ -1,16 +1,14 @@
 package com.programacion2.repositorio;
 
+import java.util.List;
+
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 
-public class Repositorio <T> implements IRepositorio <T> {
+public class Repositorio<T> implements IRepositorio<T> {
 
-
-    private  final PersistenceManagerFactory pmf;
-
-
-    
+    private final PersistenceManagerFactory pmf;
 
     public Repositorio(String persistenceUnit) {
 
@@ -25,9 +23,19 @@ public class Repositorio <T> implements IRepositorio <T> {
     }
 
     @Override
-    public T consultar(Class <T> clase, int id) {
+    public T consultar(Class<T> clase, int id) {
         PersistenceManager pm = pmf.getPersistenceManager();
-       return  pm.getObjectById(clase,id);
+        return pm.getObjectById(clase, id);
+    }
+
+    @Override
+    public void guardar(List<T> objetos) {
+        PersistenceManager pm = pmf.getPersistenceManager();
+
+        pm.makePersistentAll(objetos);
+
+        pm.close();
+
     }
 
 }

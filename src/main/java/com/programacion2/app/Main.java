@@ -1,5 +1,8 @@
 package com.programacion2.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.programacion2.dominio.Alumno;
 import com.programacion2.dominio.Materia;
 import com.programacion2.dominio.Persona;
@@ -28,9 +31,13 @@ public class Main {
         // guardarUnoAMuchosUnidireccional();
         // consultarUnoAMuchosUnidireccional(1);
 
-        //guardarUnoAMuchosBidireccional();
-        consultarDesdeMateriaUnoAMuchosBidireccional(1);
-        //consultarDesdeAlumnoUnoAMuchosBidireccional(1);
+        // guardarUnoAMuchosBidireccional();
+        // consultarDesdeMateriaUnoAMuchosBidireccional(1);
+        // consultarDesdeAlumnoUnoAMuchosBidireccional(1);
+
+       // guardarMuchosAMuchosBidireccional();
+        //consultarDesdeMateriaMuchosAMuchosBidireccional(1);
+        //consultarMateriasDeAlumnoMuchosAmuchos(1);
 
     }
     /*
@@ -50,7 +57,6 @@ public class Main {
      * se almacenará en una columna llamada PROFESOR_ID dentro
      * de la tabla MATERIA.
      */
-
 
     private static void guardarUnoAUnoUnidireccional() {
 
@@ -338,160 +344,232 @@ public class Main {
         }
     }
 
-/*
- * RELACIÓN UNO A MUCHOS BIDIRECCIONAL
- *
- * Una Materia puede tener varios alumnos y cada Alumno tiene
- * asociada una sola Materia.
- *
- * Ahora podemos navegar en ambas direcciones:
- *
- * Materia -> alumnos
- * Alumno  -> materia
- *
- * En la clase Materia agregamos:
- *
- * @Persistent(mappedBy = "materia")
- * @Join
- * private ArrayList<Alumno> alumnos;
- *
- * mappedBy = "materia" indica que el otro extremo de la relación
- * se encuentra en el atributo llamado materia de la clase Alumno.
- *
- * @Join indica que DataNucleus utiliza una tabla intermedia para
- * almacenar la relación entre las materias y los alumnos.
- *
- * En la clase Alumno agregamos:
- *
- * @Persistent
- * private Materia materia;
- *
- * Este atributo permite navegar desde un Alumno hacia su Materia.
- */
-
-private static void guardarUnoAMuchosBidireccional() {
-
     /*
-     * Primero creamos la relación bidireccional que ya existe
-     * entre Materia y Profesor:
+     * RELACIÓN UNO A MUCHOS BIDIRECCIONAL
      *
-     * Materia  -> Profesor
-     * Profesor -> Materia
-     */
-
-    Profesor profesor =
-            new Profesor("Carlos", "Pérez");
-
-    Materia materia =
-            new Materia("Programación II", profesor);
-
-    profesor.setMateria(materia);
-
-    /*
-     * Creamos los alumnos que estarán asociados a la materia.
-     */
-
-    Alumno alumno1 =
-            new Alumno("Ana", "Gómez");
-
-    Alumno alumno2 =
-            new Alumno("Pedro", "López");
-
-    Alumno alumno3 =
-            new Alumno("Lucía", "Martínez");
-
-    /*
-     * agregarAlumno() debe mantener sincronizadas las dos
-     * direcciones de la relación:
+     * Una Materia puede tener varios alumnos y cada Alumno tiene
+     * asociada una sola Materia.
+     *
+     * Ahora podemos navegar en ambas direcciones:
      *
      * Materia -> alumnos
-     * Alumno  -> materia
+     * Alumno -> materia
+     *
+     * En la clase Materia agregamos:
+     *
+     * @Persistent(mappedBy = "materia")
+     * 
+     * @Join
+     * private ArrayList<Alumno> alumnos;
+     *
+     * mappedBy = "materia" indica que el otro extremo de la relación
+     * se encuentra en el atributo llamado materia de la clase Alumno.
+     *
+     * @Join indica que DataNucleus utiliza una tabla intermedia para
+     * almacenar la relación entre las materias y los alumnos.
+     *
+     * En la clase Alumno agregamos:
+     *
+     * @Persistent
+     * private Materia materia;
+     *
+     * Este atributo permite navegar desde un Alumno hacia su Materia.
      */
 
-    materia.agregarAlumno(alumno1);
-    materia.agregarAlumno(alumno2);
-    materia.agregarAlumno(alumno3);
+    private static void guardarUnoAMuchosBidireccional() {
 
-    IRepositorio<Materia> repositorio =
-            new Repositorio<>("Programacion2");
+        /*
+         * Primero creamos la relación bidireccional que ya existe
+         * entre Materia y Profesor:
+         *
+         * Materia -> Profesor
+         * Profesor -> Materia
+         */
+
+        Profesor profesor = new Profesor("Carlos", "Pérez");
+
+        Materia materia = new Materia("Programación II", profesor);
+
+        profesor.setMateria(materia);
+
+        /*
+         * Creamos los alumnos que estarán asociados a la materia.
+         */
+
+        Alumno alumno1 = new Alumno("Ana", "Gómez");
+
+        Alumno alumno2 = new Alumno("Pedro", "López");
+
+        Alumno alumno3 = new Alumno("Lucía", "Martínez");
+
+        /*
+         * agregarAlumno() debe mantener sincronizadas las dos
+         * direcciones de la relación:
+         *
+         * Materia -> alumnos
+         * Alumno -> materia
+         */
+
+        materia.agregarAlumno(alumno1);
+        materia.agregarAlumno(alumno2);
+        materia.agregarAlumno(alumno3);
+
+        IRepositorio<Materia> repositorio = new Repositorio<>("Programacion2");
+
+        /*
+         * Guardamos la materia junto con los objetos relacionados.
+         */
+
+        repositorio.guardar(materia);
+
+        System.out.println("Materia guardada correctamente");
+        System.out.println("ID de la materia: " + materia.getId());
+    }
 
     /*
-     * Guardamos la materia junto con los objetos relacionados.
+     * CONSULTA DESDE MATERIA
+     *
+     * Recuperamos una materia mediante su ID y recorremos su colección
+     * de alumnos.
+     *
+     * Esta consulta demuestra la navegación:
+     *
+     * Materia -> alumnos
      */
 
-    repositorio.guardar(materia);
+    private static void consultarDesdeMateriaUnoAMuchosBidireccional(int id) {
 
-    System.out.println("Materia guardada correctamente");
-    System.out.println("ID de la materia: " + materia.getId());
-}
+        IRepositorio<Materia> repositorioMateria = new Repositorio<>("Programacion2");
 
-/*
- * CONSULTA DESDE MATERIA
- *
- * Recuperamos una materia mediante su ID y recorremos su colección
- * de alumnos.
- *
- * Esta consulta demuestra la navegación:
- *
- * Materia -> alumnos
- */
+        Materia materia = repositorioMateria.consultar(Materia.class, id);
 
-private static void consultarDesdeMateriaUnoAMuchosBidireccional(int id) {
+        System.out.println("Materia: " + materia.getNombre());
 
-    IRepositorio<Materia> repositorioMateria =
-            new Repositorio<>("Programacion2");
+        System.out.println("Alumnos:");
 
-    Materia materia =
-            repositorioMateria.consultar(Materia.class, id);
+        for (Alumno alumno : materia.getAlumnos()) {
 
-    System.out.println("Materia: " + materia.getNombre());
+            System.out.println(
+                    alumno.getNombre()
+                            + " "
+                            + alumno.getApellido());
+        }
+    }
 
-    System.out.println("Alumnos:");
+    /*
+     * CONSULTA DESDE ALUMNO
+     *
+     * Recuperamos un alumno mediante su ID y accedemos a la materia
+     * asociada mediante alumno.getMateria().
+     *
+     * Esta consulta demuestra la nueva dirección:
+     *
+     * Alumno -> Materia
+     *
+     * Esta navegación es posible porque la clase Alumno tiene:
+     *
+     * @Persistent
+     * private Materia materia;
+     */
 
-    for (Alumno alumno : materia.getAlumnos()) {
+    private static void consultarDesdeAlumnoUnoAMuchosBidireccional(int id) {
+
+        IRepositorio<Alumno> repositorioAlumno = new Repositorio<>("Programacion2");
+
+        Alumno alumno = repositorioAlumno.consultar(Alumno.class, id);
 
         System.out.println(
-                alumno.getNombre()
-                + " "
-                + alumno.getApellido()
+                "Alumno: "
+                        + alumno.getNombre()
+                        + " "
+                        + alumno.getApellido());
+
+        System.out.println(
+                "Materia: "
+        // + alumno.getMateria().getNombre()
         );
     }
-}
 
-/*
- * CONSULTA DESDE ALUMNO
- *
- * Recuperamos un alumno mediante su ID y accedemos a la materia
- * asociada mediante alumno.getMateria().
- *
- * Esta consulta demuestra la nueva dirección:
- *
- * Alumno -> Materia
- *
- * Esta navegación es posible porque la clase Alumno tiene:
- *
- * @Persistent
- * private Materia materia;
- */
+    private static void guardarMuchosAMuchosBidireccional() {
+        Profesor profesor = new Profesor("Carlos", "Perez");
+        Profesor profesor1 = new Profesor("Juan", "Ruiz");
+        Profesor profesor2 = new Profesor("Monica", "Gomez");
 
-private static void consultarDesdeAlumnoUnoAMuchosBidireccional(int id) {
+        Materia materia = new Materia("Programacion 2", profesor);
+        Materia materia2 = new Materia("Base De Datos", profesor1);
+        Materia materia3 = new Materia("Desarrollo Web", profesor2);
 
-    IRepositorio<Alumno> repositorioAlumno =
-            new Repositorio<>("Programacion2");
+        profesor.setMateria(materia);
+        profesor1.setMateria(materia2);
+        profesor2.setMateria(materia3);
 
-    Alumno alumno =
-            repositorioAlumno.consultar(Alumno.class, id);
+        Alumno alumno1 = new Alumno("Ana", "Ruiz");
+        Alumno alumno2 = new Alumno("Pedro", "Perez");
+        Alumno alumno3 = new Alumno("Lucia", "Gomez");
 
-    System.out.println(
-            "Alumno: "
-            + alumno.getNombre()
-            + " "
-            + alumno.getApellido()
-    );
+        materia.agregarAlumno(alumno1);
+        materia.agregarAlumno(alumno2);
+        materia.agregarAlumno(alumno3);
+        materia2.agregarAlumno(alumno3);
+        materia3.agregarAlumno(alumno2);
 
-    System.out.println(
-            "Materia: "
-            + alumno.getMateria().getNombre()
-    );
-}
+        IRepositorio<Materia> repositorio = new Repositorio<>("Programacion2");
+
+        ArrayList<Materia> materias = new ArrayList<>();
+        materias.add(materia);
+        materias.add(materia2);
+        materias.add(materia3);
+
+        repositorio.guardar(materias);
+
+        System.out.println("Relacion Guardada ");
+
+    }
+
+    private static void consultarDesdeMateriaMuchosAMuchosBidireccional(int i) {
+        IRepositorio<Materia> repositorio = new Repositorio<>("Programacion2");
+
+        Materia materia = repositorio.consultar(
+                Materia.class,
+                i);
+
+        System.out.println(
+                "Materia: " + materia.getNombre());
+
+        System.out.println("Alumnos:");
+
+        for (Alumno alumno : materia.getAlumnos()) {
+
+            System.out.println(
+                    alumno.getNombre()
+                            + " "
+                            + alumno.getApellido());
+        }
+    }
+
+    private static void consultarMateriasDeAlumnoMuchosAmuchos(
+            int idAlumno) {
+
+        IRepositorio<Alumno> repositorio = new Repositorio<>("Programacion2");
+
+        Alumno alumno = repositorio.consultar(
+                Alumno.class,
+                idAlumno);
+
+        System.out.println(
+                "Alumno: "
+                        + alumno.getNombre()
+                        + " "
+                        + alumno.getApellido());
+
+        System.out.println("Materias:");
+
+        for (Materia materia : alumno.getMaterias()) {
+
+            System.out.println(
+                    materia.getNombre());
+        }
+
+    }
+
 }

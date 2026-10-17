@@ -1,7 +1,12 @@
 package com.programacion2.repositorio;
 
-public interface IRepositorio <T> {
+import java.util.List;
 
-    void guardar (T objeto);
-    T consultar (Class <T> clase , int id);
+public interface IRepositorio<T> {
+
+    void guardar(T objeto);
+
+    void guardar(List<T> objetos);
+
+    T consultar(Class<T> clase, int id);
 }

@@ -1,5 +1,7 @@
 package com.programacion2.dominio;
 
+import java.util.ArrayList;
+
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -17,15 +19,17 @@ public class Alumno {
 
     private String apellido;
 
-    @Column(name = "MATERIA_ID")
-    private Materia materia;
+    @Persistent(mappedBy = "alumnos")
+    private ArrayList<Materia> materias;
 
     public Alumno() {
+         materias = new ArrayList<>();
     }
 
     public Alumno(String nombre, String apellido) {
         this.nombre = nombre;
         this.apellido = apellido;
+         this.materias = new ArrayList<>();
     }
 
     public int getId() {
@@ -47,27 +51,43 @@ public class Alumno {
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
-    
-    public Materia getMateria() {
-        return materia;
+
+   
+
+    public ArrayList<Materia> getMaterias() {
+        return materias;
     }
 
-    public void setMateria(Materia materia) {
-        this.materia = materia;
+    public void setMaterias(ArrayList<Materia> materias) {
+        this.materias = materias;
     }
 
-    
+
+     public void agregarMateria(Materia materia) {
+
+        /*
+         * Evitamos agregar dos veces el mismo objeto.
+         */
+        if (!materias.contains(materia)) {
+
+            materias.add(materia);
+
+            /*
+             * Sincronizamos el otro lado:
+             * Materia también conoce a este Alumno.
+             */
+            materia.agregarAlumno(this);
+        }
+    }
+
 
     @Override
     public String toString() {
         return "Alumno{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", materia=" +
-                (materia != null
-                        ? materia.getNombre()
-                        : "sin materia") +
+                ", apellido='" + apellido + '\'' 
+                +
                 '}';
     }
 

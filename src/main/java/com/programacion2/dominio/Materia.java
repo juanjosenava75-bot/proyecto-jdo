@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.Element;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Join;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -19,7 +20,10 @@ public class Materia {
     @Column(name = "PROFESOR_ID")
     private Profesor profesor;
 
-    @Persistent(mappedBy = "materia")
+    
+    @Persistent(table = "MATERIA_ALUMNOS")
+    @Join(column = "MATERIA_ID")
+    @Element(column = "ALUMNO_ID")
     private ArrayList<Alumno> alumnos;
 
     public Materia() {
@@ -66,8 +70,21 @@ public class Materia {
     }
 
     public void agregarAlumno(Alumno alumno) {
-        alumnos.add(alumno);
-        alumno.setMateria(this);
+          /*
+         * Evitamos agregar dos veces el mismo objeto
+         * a esta lista.
+         */
+        if (!alumnos.contains(alumno)) {
+
+            alumnos.add(alumno);
+
+            /*
+             * Sincronizamos el otro lado:
+             * Alumno también conoce a esta Materia.
+             */
+            alumno.agregarMateria(this);
+        }
+
     }
 
     
