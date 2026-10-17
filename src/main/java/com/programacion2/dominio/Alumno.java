@@ -4,52 +4,30 @@ import java.util.ArrayList;
 
 import javax.jdo.annotations.Column;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Inheritance;
+import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
-public class Alumno {
+@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+public class Alumno extends  Persona{
 
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private int id;
-
-    private String nombre;
-
-    private String apellido;
+     private String legajo;
 
     @Persistent(mappedBy = "alumnos")
     private ArrayList<Materia> materias;
 
     public Alumno() {
+        super();
          materias = new ArrayList<>();
     }
 
-    public Alumno(String nombre, String apellido) {
-        this.nombre = nombre;
-        this.apellido = apellido;
+    public Alumno(String nombre, String apellido , String legajo) {
+        super(nombre, apellido);
+        this.legajo = legajo;
          this.materias = new ArrayList<>();
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
     }
 
    
@@ -62,6 +40,15 @@ public class Alumno {
         this.materias = materias;
     }
 
+    
+
+     public String getLegajo() {
+        return legajo;
+    }
+
+    public void setLegajo(String legajo) {
+        this.legajo = legajo;
+    }
 
      public void agregarMateria(Materia materia) {
 
@@ -84,9 +71,9 @@ public class Alumno {
     @Override
     public String toString() {
         return "Alumno{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' 
+                "id=" + getId() +
+                ", nombre='" + getNombre() + '\'' +
+                ", apellido='" + getApellido() + '\'' 
                 +
                 '}';
     }

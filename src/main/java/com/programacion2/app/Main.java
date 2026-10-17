@@ -35,9 +35,9 @@ public class Main {
         // consultarDesdeMateriaUnoAMuchosBidireccional(1);
         // consultarDesdeAlumnoUnoAMuchosBidireccional(1);
 
-       // guardarMuchosAMuchosBidireccional();
-        //consultarDesdeMateriaMuchosAMuchosBidireccional(1);
-        //consultarMateriasDeAlumnoMuchosAmuchos(1);
+        // guardarMuchosAMuchosBidireccional();
+        // consultarDesdeMateriaMuchosAMuchosBidireccional(1);
+        // consultarMateriasDeAlumnoMuchosAmuchos(1);
 
     }
     /*
@@ -62,7 +62,7 @@ public class Main {
 
         IRepositorio<Materia> repositorio = new Repositorio<>("Programacion2");
 
-        Profesor profesor = new Profesor("Carlos", "Perez");
+        Profesor profesor = new Profesor("Carlos", "Perez","Programacion");
 
         Materia materia = new Materia("Programacion 2", profesor);
 
@@ -127,7 +127,7 @@ public class Main {
 
     private static void guardarUnoAUnoBidireccional() {
 
-        Profesor profesor = new Profesor("Carlos", "Pérez");
+        Profesor profesor = new Profesor("Carlos", "Pérez","Programacion");
 
         Materia materia = new Materia("Programación II", profesor);
 
@@ -264,7 +264,7 @@ public class Main {
          * Profesor -> Materia
          */
 
-        Profesor profesor = new Profesor("Carlos", "Pérez");
+        Profesor profesor = new Profesor("Carlos", "Pérez","Programacion");
 
         Materia materia = new Materia("Programación II", profesor);
 
@@ -275,11 +275,11 @@ public class Main {
          * perteneciente a la materia.
          */
 
-        Alumno alumno1 = new Alumno("Ana", "Gómez");
+        Alumno alumno1 = new Alumno("Ana", "Gómez","100");
 
-        Alumno alumno2 = new Alumno("Pedro", "López");
+        Alumno alumno2 = new Alumno("Pedro", "López","200");
 
-        Alumno alumno3 = new Alumno("Lucía", "Martínez");
+        Alumno alumno3 = new Alumno("Lucía", "Martínez","300");
 
         /*
          * Agregamos los alumnos a la colección de Materia.
@@ -386,7 +386,7 @@ public class Main {
          * Profesor -> Materia
          */
 
-        Profesor profesor = new Profesor("Carlos", "Pérez");
+        Profesor profesor = new Profesor("Carlos", "Pérez","Programacion");
 
         Materia materia = new Materia("Programación II", profesor);
 
@@ -396,11 +396,11 @@ public class Main {
          * Creamos los alumnos que estarán asociados a la materia.
          */
 
-        Alumno alumno1 = new Alumno("Ana", "Gómez");
+        Alumno alumno1 = new Alumno("Ana", "Gómez", "100");
 
-        Alumno alumno2 = new Alumno("Pedro", "López");
+        Alumno alumno2 = new Alumno("Pedro", "López","200");
 
-        Alumno alumno3 = new Alumno("Lucía", "Martínez");
+        Alumno alumno3 = new Alumno("Lucía", "Martínez","300");
 
         /*
          * agregarAlumno() debe mantener sincronizadas las dos
@@ -491,9 +491,9 @@ public class Main {
     }
 
     private static void guardarMuchosAMuchosBidireccional() {
-        Profesor profesor = new Profesor("Carlos", "Perez");
-        Profesor profesor1 = new Profesor("Juan", "Ruiz");
-        Profesor profesor2 = new Profesor("Monica", "Gomez");
+        Profesor profesor = new Profesor("Carlos", "Perez","Programacion");
+        Profesor profesor1 = new Profesor("Juan", "Ruiz" ,"B. D.");
+        Profesor profesor2 = new Profesor("Monica", "Gomez", "Web");
 
         Materia materia = new Materia("Programacion 2", profesor);
         Materia materia2 = new Materia("Base De Datos", profesor1);
@@ -503,9 +503,9 @@ public class Main {
         profesor1.setMateria(materia2);
         profesor2.setMateria(materia3);
 
-        Alumno alumno1 = new Alumno("Ana", "Ruiz");
-        Alumno alumno2 = new Alumno("Pedro", "Perez");
-        Alumno alumno3 = new Alumno("Lucia", "Gomez");
+        Alumno alumno1 = new Alumno("Ana", "Ruiz","100");
+        Alumno alumno2 = new Alumno("Pedro", "Perez", "200");
+        Alumno alumno3 = new Alumno("Lucia", "Gomez", "300");
 
         materia.agregarAlumno(alumno1);
         materia.agregarAlumno(alumno2);

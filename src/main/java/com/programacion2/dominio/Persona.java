@@ -1,38 +1,34 @@
 package com.programacion2.dominio;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Inheritance;
+import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
- @PersistenceCapable 
+@PersistenceCapable
+@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
 public class Persona {
 
-    private Long id;
-    private  String nombre;
-    private  String apellido;
-    private  int edad;
-    
-   
-    public Persona(String nombre, String apellido, int edad) {
-        
+    @PrimaryKey
+    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+    private int id;
+
+    private String nombre;
+
+    private String apellido;
+
+    public Persona() {
+    }
+
+    public Persona(String nombre, String apellido) {
         this.nombre = nombre;
         this.apellido = apellido;
-        this.edad = edad;
     }
 
-    public Persona (){
-
-    }
-
-    @PrimaryKey 
-    @Persistent (valueStrategy = IdGeneratorStrategy.IDENTITY)
-    public Long getId() {
+    public int getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getNombre() {
@@ -51,19 +47,12 @@ public class Persona {
         this.apellido = apellido;
     }
 
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
     @Override
     public String toString() {
-        return "Persona [id=" + id + ", nombre=" + nombre + ", apellido=" + apellido + ", edad=" + edad + "]";
+        return "Persona{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                '}';
     }
-
-    
-
 }

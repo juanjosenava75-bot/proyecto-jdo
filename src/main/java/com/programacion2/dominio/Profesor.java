@@ -1,53 +1,27 @@
 package com.programacion2.dominio;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Inheritance;
+import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
-public class Profesor {
+@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+public class Profesor extends Persona{
 
-    @PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-    private int id;
-    private String nombre;
-    private String apellido;
     @Persistent(mappedBy = "profesor")
     private Materia materia;
+    String especialidad;
 
     public Profesor() {
+        super();
     }
 
-    public Profesor(String nombre, String apellido) {
-        this.nombre = nombre;
-        this.apellido = apellido;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    
-
-        public void setId(int id) {
-        this.id = id;
+    public Profesor(String nombre, String apellido, String especialidad) {
+       super(nombre,apellido);
+       this.especialidad = especialidad;
     }
 
     public Materia getMateria() {
@@ -61,9 +35,9 @@ public class Profesor {
         @Override
     public String toString() {
         return "Profesor{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
+                "id=" + getId() +
+                ", nombre='" +getNombre() + '\'' +
+                ", apellido='" + getApellido() + '\'' +
                 ", materia=" +
                 (materia != null ? materia.getNombre() : "sin materia") +
                 '}';
