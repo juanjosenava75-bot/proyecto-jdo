@@ -11,7 +11,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
-@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
 public class Alumno extends  Persona{
 
      private String legajo;

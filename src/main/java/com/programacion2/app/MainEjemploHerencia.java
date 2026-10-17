@@ -10,7 +10,7 @@ public class MainEjemploHerencia {
     public static void main(String[] args) {
 
         /*
-         * ESTRATEGIA SUBCLASS_TABLE
+         * ESTRATEGIA SUPERCLASS_TABLE
          *
          * Primero ejecutar los métodos guardar.
          * Después revisar los ID generados en la consola
@@ -24,59 +24,89 @@ public class MainEjemploHerencia {
         // guardarProfesor();
 
         // consultarAlumno(1);
-        consultarProfesor(1);
+        consultarProfesor(2);
     }
 
     /*
-     * HERENCIA CON SUBCLASS_TABLE
+     * HERENCIA CON SUPERCLASS_TABLE
      *
      * Tenemos la siguiente jerarquía:
      *
-     *              Persona
-     *              /     \
-     *          Alumno   Profesor
+     * Persona
+     * / \
+     * Alumno Profesor
      *
-     * En la clase Persona agregamos:
+     * En la clase Persona utilizamos:
      *
      * @PersistenceCapable
-     * @Inheritance(strategy = InheritanceStrategy.SUBCLASS_TABLE)
-     * public abstract class Persona {
-     *     ...
+     * 
+     * @Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+     * public class Persona {
+     * ...
      * }
      *
-     * SUBCLASS_TABLE indica que los atributos declarados en Persona
-     * se almacenarán en las tablas de sus subclases.
+     * NEW_TABLE indica que Persona tendrá su propia tabla.
      *
-     * Persona no necesita tener una tabla propia.
-     *
-     * En la clase Alumno agregamos:
+     * En la clase Alumno utilizamos:
      *
      * @PersistenceCapable
-     * @Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+     * 
+     * @Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
      * public class Alumno extends Persona {
-     *     ...
+     * ...
      * }
      *
-     * En la clase Profesor agregamos:
+     * En la clase Profesor utilizamos:
      *
      * @PersistenceCapable
-     * @Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+     * 
+     * @Inheritance(strategy = InheritanceStrategy.SUPERCLASS_TABLE)
      * public class Profesor extends Persona {
-     *     ...
+     * ...
      * }
      *
-     * DataNucleus crea una tabla ALUMNO que contiene:
+     * SUPERCLASS_TABLE indica que los atributos de las subclases
+     * se almacenan en la tabla de la superclase.
      *
-     * id, nombre, apellido y legajo.
+     * Por lo tanto, Alumno y Profesor no tienen tablas propias.
      *
-     * También crea una tabla PROFESOR que contiene:
+     * Todos los objetos de la jerarquía se almacenan en la tabla
+     * PERSONA.
      *
-     * id, nombre, apellido y especialidad.
+     * La tabla PERSONA puede contener las siguientes columnas:
      *
-     * Los atributos nombre y apellido están declarados en Persona,
-     * pero se almacenan en las tablas ALUMNO y PROFESOR.
+     * id
+     * nombre
+     * apellido
+     * legajo
+     * especialidad
      *
-     * No se crea una tabla PERSONA.
+     * Como no todos los objetos utilizan las mismas columnas,
+     * algunas pueden contener valores nulos.
+     *
+     * Por ejemplo:
+     *
+     * - En un registro correspondiente a un Alumno, especialidad
+     * estará en null.
+     *
+     * - En un registro correspondiente a un Profesor, legajo
+     * estará en null.
+     *
+     * /*
+     * En la clase Persona también agregamos un discriminador:
+     *
+     * @Discriminator(
+     * strategy = DiscriminatorStrategy.CLASS_NAME,
+     * column = "TIPO_PERSONA"
+     * )
+     *
+     * El discriminador agrega la columna TIPO_PERSONA en la tabla PERSONA.
+     *
+     * DataNucleus utiliza esta columna para identificar qué clase
+     * representa cada registro.
+     *
+     * Por ejemplo, permite diferenciar si una fila corresponde
+     * a un Alumno o a un Profesor.
      */
 
     /*
@@ -85,13 +115,18 @@ public class MainEjemploHerencia {
      * Alumno hereda id, nombre y apellido de Persona y agrega
      * su atributo propio legajo.
      *
-     * Como Persona utiliza SUBCLASS_TABLE, todos los datos del
-     * objeto se almacenan en la tabla ALUMNO:
+     * Como Alumno utiliza SUPERCLASS_TABLE, no se crea ni se utiliza
+     * una tabla ALUMNO.
+     *
+     * DataNucleus guarda todos los datos del objeto en PERSONA:
      *
      * id, nombre, apellido y legajo.
      *
-     * No se realiza una inserción en una tabla PERSONA porque
-     * esa tabla no existe en esta estrategia.
+     * La columna especialidad no corresponde a Alumno, por lo que
+     * quedará con valor null.
+     *
+     * La información del discriminador permite identificar que
+     * el registro representa un objeto Alumno.
      */
 
     private static void guardarAlumno() {
@@ -99,11 +134,9 @@ public class MainEjemploHerencia {
         Alumno alumno = new Alumno(
                 "Ana",
                 "Gómez",
-                "A100"
-        );
+                "A100");
 
-        IRepositorio<Alumno> repositorio =
-                new Repositorio<>("Programacion2");
+        IRepositorio<Alumno> repositorio = new Repositorio<>("Programacion2");
 
         repositorio.guardar(alumno);
 
@@ -117,13 +150,18 @@ public class MainEjemploHerencia {
      * Profesor hereda id, nombre y apellido de Persona y agrega
      * su atributo propio especialidad.
      *
-     * Como Persona utiliza SUBCLASS_TABLE, todos los datos del
-     * objeto se almacenan en la tabla PROFESOR:
+     * Como Profesor utiliza SUPERCLASS_TABLE, no se crea ni se
+     * utiliza una tabla PROFESOR.
+     *
+     * DataNucleus guarda todos los datos del objeto en PERSONA:
      *
      * id, nombre, apellido y especialidad.
      *
-     * No se realiza una inserción en una tabla PERSONA porque
-     * esa tabla no existe en esta estrategia.
+     * La columna legajo no corresponde a Profesor, por lo que
+     * quedará con valor null.
+     *
+     * La información del discriminador permite identificar que
+     * el registro representa un objeto Profesor.
      */
 
     private static void guardarProfesor() {
@@ -131,11 +169,9 @@ public class MainEjemploHerencia {
         Profesor profesor = new Profesor(
                 "Carlos",
                 "Pérez",
-                "Programación"
-        );
+                "Programación");
 
-        IRepositorio<Profesor> repositorio =
-                new Repositorio<>("Programacion2");
+        IRepositorio<Profesor> repositorio = new Repositorio<>("Programacion2");
 
         repositorio.guardar(profesor);
 
@@ -148,28 +184,28 @@ public class MainEjemploHerencia {
      *
      * Recuperamos un Alumno mediante su ID.
      *
-     * DataNucleus obtiene todos sus datos directamente desde
-     * la tabla ALUMNO:
+     * DataNucleus busca el registro en la tabla PERSONA.
      *
-     * id, nombre, apellido y legajo.
+     * Mediante la información de la jerarquía y, cuando corresponde,
+     * el valor del discriminador, determina que el registro representa
+     * un objeto Alumno.
      *
-     * No necesita combinar ALUMNO con una tabla PERSONA porque
-     * PERSONA no tiene una tabla propia.
+     * Después construye el objeto utilizando:
      *
-     * Finalmente construye un objeto Alumno con los atributos
-     * heredados y los atributos propios.
+     * - Los atributos heredados: id, nombre y apellido.
+     * - El atributo propio: legajo.
+     *
+     * No necesita combinar varias tablas porque todos los datos
+     * se encuentran en PERSONA.
      */
 
     private static void consultarAlumno(int id) {
 
-        IRepositorio<Alumno> repositorioAlumno =
-                new Repositorio<>("Programacion2");
+        IRepositorio<Alumno> repositorioAlumno = new Repositorio<>("Programacion2");
 
-        Alumno alumno =
-                repositorioAlumno.consultar(
-                        Alumno.class,
-                        id
-                );
+        Alumno alumno = repositorioAlumno.consultar(
+                Alumno.class,
+                id);
 
         System.out.println("Alumno recuperado:");
         System.out.println(alumno);
@@ -180,28 +216,28 @@ public class MainEjemploHerencia {
      *
      * Recuperamos un Profesor mediante su ID.
      *
-     * DataNucleus obtiene todos sus datos directamente desde
-     * la tabla PROFESOR:
+     * DataNucleus busca el registro en la tabla PERSONA.
      *
-     * id, nombre, apellido y especialidad.
+     * Mediante la información de la jerarquía y, cuando corresponde,
+     * el valor del discriminador, determina que el registro representa
+     * un objeto Profesor.
      *
-     * No necesita combinar PROFESOR con una tabla PERSONA porque
-     * PERSONA no tiene una tabla propia.
+     * Después construye el objeto utilizando:
      *
-     * Finalmente construye un objeto Profesor con los atributos
-     * heredados y los atributos propios.
+     * - Los atributos heredados: id, nombre y apellido.
+     * - El atributo propio: especialidad.
+     *
+     * No necesita combinar varias tablas porque todos los datos
+     * se encuentran en PERSONA.
      */
 
     private static void consultarProfesor(int id) {
 
-        IRepositorio<Profesor> repositorioProfesor =
-                new Repositorio<>("Programacion2");
+        IRepositorio<Profesor> repositorioProfesor = new Repositorio<>("Programacion2");
 
-        Profesor profesor =
-                repositorioProfesor.consultar(
-                        Profesor.class,
-                        id
-                );
+        Profesor profesor = repositorioProfesor.consultar(
+                Profesor.class,
+                id);
 
         System.out.println("Profesor recuperado:");
         System.out.println(profesor);
