@@ -20,11 +20,11 @@ public class MainEjemploHerencia {
          * las consultas con los ID correspondientes.
          */
 
-        // guardarAlumno();
+         guardarAlumno();
         // guardarProfesor();
 
         // consultarAlumno(1);
-        consultarProfesor(2);
+        //consultarProfesor(2);
     }
 
     /*
@@ -132,9 +132,9 @@ public class MainEjemploHerencia {
     private static void guardarAlumno() {
 
         Alumno alumno = new Alumno(
-                "Ana",
+                "Analia",
                 "Gómez",
-                "A100");
+                "A600");
 
         IRepositorio<Alumno> repositorio = new Repositorio<>("Programacion2");
 

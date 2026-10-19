@@ -8,11 +8,12 @@ import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.Unique;
 
 
 @PersistenceCapable
 public class Alumno extends  Persona{
-
+    @Unique 
      private String legajo;
 
     @Persistent(mappedBy = "alumnos")

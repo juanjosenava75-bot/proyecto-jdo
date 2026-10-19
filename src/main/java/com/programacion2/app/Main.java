@@ -35,7 +35,7 @@ public class Main {
         // consultarDesdeMateriaUnoAMuchosBidireccional(1);
         // consultarDesdeAlumnoUnoAMuchosBidireccional(1);
 
-        // guardarMuchosAMuchosBidireccional();
+         //guardarMuchosAMuchosBidireccional();
         // consultarDesdeMateriaMuchosAMuchosBidireccional(1);
         // consultarMateriasDeAlumnoMuchosAmuchos(1);
 
