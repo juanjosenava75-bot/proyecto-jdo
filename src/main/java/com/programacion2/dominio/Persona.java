@@ -10,8 +10,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 @PersistenceCapable
-@Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
-@Discriminator(strategy = DiscriminatorStrategy.CLASS_NAME, column = "TIPO_PERSONA")
+@Inheritance(strategy = InheritanceStrategy.COMPLETE_TABLE)
 
 public abstract class Persona {
 
