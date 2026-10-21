@@ -35,8 +35,8 @@ public class Main {
         // consultarDesdeMateriaUnoAMuchosBidireccional(1);
         // consultarDesdeAlumnoUnoAMuchosBidireccional(1);
 
-         //guardarMuchosAMuchosBidireccional();
-        // consultarDesdeMateriaMuchosAMuchosBidireccional(1);
+        guardarMuchosAMuchosBidireccional();
+         //consultarDesdeMateriaMuchosAMuchosBidireccional(1);
         // consultarMateriasDeAlumnoMuchosAmuchos(1);
 
     }
@@ -513,6 +513,13 @@ public class Main {
         materia2.agregarAlumno(alumno3);
         materia3.agregarAlumno(alumno2);
 
+        alumno1.agregarMateria(materia);
+         alumno1.agregarMateria(materia2); 
+         alumno1.agregarMateria(materia3);
+
+        alumno2.agregarMateria(materia2);
+        alumno3.agregarMateria(materia3);
+
         IRepositorio<Materia> repositorio = new Repositorio<>("Programacion2");
 
         ArrayList<Materia> materias = new ArrayList<>();
@@ -545,6 +552,9 @@ public class Main {
                             + " "
                             + alumno.getApellido());
         }
+
+        
+        
     }
 
     private static void consultarMateriasDeAlumnoMuchosAmuchos(

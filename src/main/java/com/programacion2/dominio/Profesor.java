@@ -6,10 +6,10 @@ import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
-@PersistenceCapable
+@PersistenceCapable (detachable = "true")
 public class Profesor extends Persona{
 
-    @Persistent(mappedBy = "profesor")
+    @Persistent(mappedBy = "profesor",defaultFetchGroup = "true")
     private Materia materia;
     String especialidad;
 

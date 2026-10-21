@@ -10,18 +10,20 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable
+@PersistenceCapable (detachable = "true")
 public class Materia {
 
     @PrimaryKey
     @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
     private int id;
     private String nombre;
+    
+    @Persistent (defaultFetchGroup = "true")
     @Column(name = "PROFESOR_ID")
     private Profesor profesor;
 
     
-    @Persistent(table = "MATERIA_ALUMNOS")
+    @Persistent(table = "MATERIA_ALUMNOS", defaultFetchGroup = "true")
     @Join(column = "MATERIA_ID")
     @Element(column = "ALUMNO_ID")
     private ArrayList<Alumno> alumnos;
@@ -70,20 +72,12 @@ public class Materia {
     }
 
     public void agregarAlumno(Alumno alumno) {
-          /*
-         * Evitamos agregar dos veces el mismo objeto
-         * a esta lista.
-         */
-        if (!alumnos.contains(alumno)) {
+       
 
             alumnos.add(alumno);
 
-            /*
-             * Sincronizamos el otro lado:
-             * Alumno también conoce a esta Materia.
-             */
-            alumno.agregarMateria(this);
-        }
+          
+        
 
     }
 
@@ -94,7 +88,7 @@ public class Materia {
         return "Materia{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
-                ", cantidadAlumnos=" + alumnos.size() +
+
                 '}';
     }
 

@@ -9,4 +9,5 @@ public interface IRepositorio<T> {
     void guardar(List<T> objetos);
 
     T consultar(Class<T> clase, int id);
+    List <T> listar (Class <T> clase);
 }

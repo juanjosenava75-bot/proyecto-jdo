@@ -11,12 +11,12 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.Unique;
 
 
-@PersistenceCapable
+@PersistenceCapable (detachable = "true")
 public class Alumno extends  Persona{
     @Unique 
      private String legajo;
 
-    @Persistent(mappedBy = "alumnos")
+    @Persistent(mappedBy = "alumnos", defaultFetchGroup = "true")
     private ArrayList<Materia> materias;
 
     public Alumno() {
@@ -52,19 +52,7 @@ public class Alumno extends  Persona{
 
      public void agregarMateria(Materia materia) {
 
-        /*
-         * Evitamos agregar dos veces el mismo objeto.
-         */
-        if (!materias.contains(materia)) {
-
             materias.add(materia);
-
-            /*
-             * Sincronizamos el otro lado:
-             * Materia también conoce a este Alumno.
-             */
-            materia.agregarAlumno(this);
-        }
     }
 
 

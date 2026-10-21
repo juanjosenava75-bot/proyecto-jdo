@@ -9,7 +9,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-@PersistenceCapable
+@PersistenceCapable (detachable = "true")
 @Inheritance(strategy = InheritanceStrategy.COMPLETE_TABLE)
 
 public abstract class Persona {
